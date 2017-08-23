@@ -62,6 +62,9 @@ protected:
 	bool m_ForceBalanced;
 
 public:
+	//ADD BY Mezza
+	void incrementTeamScore(int value, int team);
+	//END 
 	const char *m_pGameType;
 
 	bool IsTeamplay() const;

@@ -696,8 +696,11 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 {
 	m_Core.m_Vel += Force;
 
-	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
-		return false;
+	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From))   //&& !g_Config.m_SvTeamdamage
+	{
+		GameServer()->m_pController->incrementTeamScore(5, m_pPlayer->GetTeam());
+		return 0;
+	}
 
 	// m_pPlayer only inflicts half damage on self
 	if(From == m_pPlayer->GetCID())
