@@ -99,13 +99,13 @@ void CBot::UpdateTarget()
 	if(m_ComputeTarget.m_Type == CTarget::TARGET_AIR)
 	{
 		float dist = distance(m_pPlayer->GetCharacter()->GetPos(), m_ComputeTarget.m_Pos);
-		if(dist < 60)
+		if(dist < 100)
 			FindNewTarget = true;
 	}
 	if(m_ComputeTarget.m_Type > CTarget::TARGET_PLAYER)
 	{
 		float dist = distance(m_pPlayer->GetCharacter()->GetPos(), m_ComputeTarget.m_Pos);
-		if(dist > 300)                                                                   // dist < 28 to dist < 300
+		if(dist > 100)                                                                   // dist < 28 to dist < 15
 			FindNewTarget = true;
 	}
 	if(FindNewTarget)
@@ -239,15 +239,15 @@ bool CBot::NeedPickup(int Type)
 	switch(Type)
 	{
 	case CTarget::TARGET_HEALTH:
-		return m_pPlayer->GetCharacter()->GetHealth() < 4;
+		return m_pPlayer->GetCharacter()->GetHealth() < 6;
 	case CTarget::TARGET_ARMOR:
-		return m_pPlayer->GetCharacter()->GetArmor() < 1;
+		return m_pPlayer->GetCharacter()->GetArmor() < 8;
 	case CTarget::TARGET_WEAPON_SHOTGUN:
 		return m_pPlayer->GetCharacter()->GetAmmoCount(WEAPON_SHOTGUN) < 3;
-	//case CTarget::TARGET_WEAPON_GRENADE:
-	//	return m_pPlayer->GetCharacter()->GetAmmoCount(WEAPON_GRENADE) < 5;
-	//case CTarget::TARGET_WEAPON_LASER:
-	//	return m_pPlayer->GetCharacter()->GetAmmoCount(WEAPON_RIFLE) < 5;
+	case CTarget::TARGET_WEAPON_GRENADE:
+		return m_pPlayer->GetCharacter()->GetAmmoCount(WEAPON_GRENADE) < 5;
+	case CTarget::TARGET_WEAPON_LASER:
+		return m_pPlayer->GetCharacter()->GetAmmoCount(WEAPON_RIFLE) < 5;
 	}
 	return false;
 }
@@ -267,14 +267,14 @@ bool CBot::FindPickup(int Type, vec2 *pPos, float Radius)
 			Type = POWERUP_WEAPON;
 			SubType = WEAPON_SHOTGUN;
 			break;
-		//case CTarget::TARGET_WEAPON_GRENADE:
-		//	Type = POWERUP_WEAPON;
-		//	SubType = WEAPON_GRENADE;
-		//	break;
-	//	case CTarget::TARGET_WEAPON_LASER:
-		//	Type = POWERUP_WEAPON;
-		//	SubType = WEAPON_RIFLE;
-		//	break;
+		case CTarget::TARGET_WEAPON_GRENADE:
+			Type = POWERUP_WEAPON;
+			SubType = WEAPON_GRENADE;
+			break;
+		case CTarget::TARGET_WEAPON_LASER:
+			Type = POWERUP_WEAPON;
+			SubType = WEAPON_RIFLE;
+			break;
 	}
 	CEntity *pEnt = GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_PICKUP);
 	bool Found = false;
