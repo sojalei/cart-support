@@ -9,7 +9,7 @@
 #include "ai/genetics.h"
 #include "ai/strategy.h"
 
-const char g_BotClan[12] = "Love";
+const char g_BotClan[12] = "bot";
 const char g_aBotName[MAX_CLIENTS][16] = {
 	"Anna",
 	"Bob",
