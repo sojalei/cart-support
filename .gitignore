@@ -1,32 +1,22 @@
-# Prerequisites
-*.d
+bam
+.bam
+config.lua
+datasrc/__pycache__
+datasrc/*.pyc
+objs
+src/game/generated
+SDL.dll
+freetype.dll
+autoexec.cfg
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+crapnet*
+dilate*
+fake_server*
+map_resave*
+map_version*
+mastersrv*
+packetgen*
+teeworlds*
+teeworlds_srv*
+tileset_border*
+versionsrv*
