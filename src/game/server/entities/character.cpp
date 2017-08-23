@@ -8,6 +8,7 @@
 #include "character.h"
 #include "laser.h"
 #include "projectile.h"
+#include <game/server/bot.h>
 
 //input count
 struct CInputCount
@@ -659,10 +660,23 @@ bool CCharacter::IncreaseArmor(int Amount)
 	return true;
 }
 
-void CCharacter::Die(int Killer, int Weapon)
-{
+void CCharacter::Die(int Killer, int Weapon)                                  ////////////////////////////////////////////////////////////////////////////////////////////
+{	
+	if(m_pPlayer->IsBot())  //Server()->ClientName(p_PlayerID)
+	{
+		if(m_pPlayer->GetTeam() == TEAM_RED)
+		{
+			GameServer()->m_pController->incrementTeamScore(15, TEAM_BLUE);
+		} else
+		{
+			GameServer()->m_pController->incrementTeamScore(15, TEAM_RED);
+		}
+
+	}
+	
+
 	// we got to wait 0.5 secs before respawning
-	m_pPlayer->m_RespawnTick = Server()->Tick()+Server()->TickSpeed()/2;
+	m_pPlayer->m_RespawnTick = Server()->Tick()+Server()->TickSpeed()/4;
 	int ModeSpecial = GameServer()->m_pController->OnCharacterDeath(this, GameServer()->m_apPlayers[Killer], Weapon);
 	GameServer()->m_pBotEngine->OnCharacterDeath(m_pPlayer->GetCID(),Killer, Weapon);
 
@@ -683,7 +697,7 @@ void CCharacter::Die(int Killer, int Weapon)
 	// a nice sound
 	GameServer()->CreateSound(m_Pos, SOUND_PLAYER_DIE);
 
-	// this is for auto respawn after 3 secs
+	// this is for auto respawn after 4 secs
 	m_pPlayer->m_DieTick = Server()->Tick();
 
 	m_Alive = false;
@@ -698,7 +712,11 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 
 	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From))   //&& !g_Config.m_SvTeamdamage
 	{
-		GameServer()->m_pController->incrementTeamScore(5, m_pPlayer->GetTeam());
+		if(Weapon == WEAPON_HAMMER)
+		{
+			GameServer()->m_pController->incrementTeamScore(5, m_pPlayer->GetTeam());
+			//TODO: Sound
+		}
 		return 0;
 	}
 
